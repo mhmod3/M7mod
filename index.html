@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M7mod</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f2f2f2; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #007bff; 
+        }
+        label {
+            font-weight: bold;
+        }
+        textarea, input[type="file"], button {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f8f9fa; 
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3; 
+        }
+        .results-container {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f2f2f2;
+        }
+        .results {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #d4edda; 
+            color: #155724; 
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        function checkLinksAndFiles() {
+            var linksInput = document.getElementById('links').value;
+            var links = linksInput.split(',');
+            var resultsContainer = document.getElementById('results');
+            resultsContainer.innerHTML = ''; 
+
+            var allLinksWorking = true; 
+
+            links.forEach(function(link) {
+                link = link.trim();
+                if (link !== '') {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('HEAD', link, true);
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4) {
+                            if (xhr.status < 400) {
+                                resultsContainer.innerHTML += '<p>' + link + ' - شغالة</p>';
+                            } else {
+                                resultsContainer.innerHTML += '<p>' + link + ' - غير شغالة</p>';
+                                allLinksWorking = false; 
+                            }
+
+                            
+                            if (resultsContainer.children.length === links.length) {
+                                if (allLinksWorking) {
+                                    resultsContainer.innerHTML += '<div class="results">جميع الروابط شغالة</div>';
+                                }
+                            }
+                        }
+                    };
+                    xhr.send();
+                }
+            });
+        }
+
+        function handleFileSelect(event) {
+            var files = event.target.files;
+            var reader = new FileReader();
+
+            reader.onload = function(event) {
+                var fileContent = event.target.result;
+                var fileLines = fileContent.split('\n');
+                var links = fileLines.map(function(line) {
+                    return line.trim();
+                });
+
+                var resultsContainer = document.getElementById('results');
+                resultsContainer.innerHTML = ''; 
+
+                var allLinksWorking = true; 
+
+                links.forEach(function(link) {
+                    if (link !== '') {
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('HEAD', link, true);
+                        xhr.onreadystatechange = function() {
+                            if (xhr.readyState === 4) {
+                                if (xhr.status < 400) {
+                                    resultsContainer.innerHTML += '<p>' + link + ' - شغالة</p>';
+                                } else {
+                                    resultsContainer.innerHTML += '<p>' + link + ' - غير شغالة</p>';
+                                    allLinksWorking = false; 
+                                }
+
+                                
+                                if (resultsContainer.children.length === links.length) {
+                                    if (allLinksWorking) {
+                                        resultsContainer.innerHTML += '<div class="results">جميع الروابط شغالة</div>';
+                                    }
+                                }
+                            }
+                        };
+                        xhr.send();
+                    }
+                });
+            };
+
+            reader.readAsText(files[0]);
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>فحص الروابط والملفات</h1>
+        <div>
+            <label for="links">الرجاء إدخال الروابط (مفصولة بفواصل):</label><br>
+            <textarea id="links" rows="5" placeholder="أدخل الروابط هنا..."></textarea><br>
+            <button onclick="checkLinksAndFiles()">فحص الروابط</button>
+        </div>
+        <div>
+            <label for="files">أو قم بتحميل ملف نصي (txt):</label><br>
+            <input type="file" id="files" accept=".txt" onchange="handleFileSelect(event)">
+        </div>
+        <div class="results-container">
+            <div id="results"></div>
+        </div>
+    </div>
+</body>
+</html>
