@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>M7mod</title>
+    <title>فحص الروابط والملفات</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            background-color: #f2f2f2; 
+            background-color: #f2f2f2; /* خلفية رمادية */
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
@@ -23,7 +23,7 @@
         h1 {
             text-align: center;
             margin-bottom: 30px;
-            color: #007bff; 
+            color: #007bff; /* لون العنوان */
         }
         label {
             font-weight: bold;
@@ -35,7 +35,7 @@
             font-size: 16px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            background-color: #f8f9fa; 
+            background-color: #f8f9fa; /* خلفية حقول الإدخال */
         }
         button {
             background-color: #007bff;
@@ -45,7 +45,7 @@
             transition: background-color 0.3s ease;
         }
         button:hover {
-            background-color: #0056b3; 
+            background-color: #0056b3; /* تغيير لون الزر عند التحويم */
         }
         .results-container {
             margin-top: 20px;
@@ -57,8 +57,8 @@
         .results {
             margin-top: 10px;
             padding: 10px;
-            background-color: #d4edda; 
-            color: #155724; 
+            background-color: #d4edda; /* خلفية نتائج الفحص الناجحة */
+            color: #155724; /* لون نص نتائج الفحص الناجحة */
             border: 1px solid #c3e6cb;
             border-radius: 5px;
         }
@@ -66,15 +66,21 @@
             color: red;
             font-weight: bold;
         }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 14px;
+        }
     </style>
     <script>
         function checkLinksAndFiles() {
             var linksInput = document.getElementById('links').value;
             var links = linksInput.split(',');
             var resultsContainer = document.getElementById('results');
-            resultsContainer.innerHTML = ''; 
+            resultsContainer.innerHTML = ''; // لمسح أي نتائج سابقة
 
-            var allLinksWorking = true; 
+            var allLinksWorking = true; // متغير للتحقق من أن جميع الروابط شغالة
 
             links.forEach(function(link) {
                 link = link.trim();
@@ -87,10 +93,10 @@
                                 resultsContainer.innerHTML += '<p>' + link + ' - شغالة</p>';
                             } else {
                                 resultsContainer.innerHTML += '<p>' + link + ' - غير شغالة</p>';
-                                allLinksWorking = false; 
+                                allLinksWorking = false; // إذا كان أي رابط غير شغال، يتم تعيين القيمة إلى false
                             }
 
-                            
+                            // إذا وصلنا إلى آخر رابط، نقوم بالتحقق من المتغير
                             if (resultsContainer.children.length === links.length) {
                                 if (allLinksWorking) {
                                     resultsContainer.innerHTML += '<div class="results">جميع الروابط شغالة</div>';
@@ -115,9 +121,9 @@
                 });
 
                 var resultsContainer = document.getElementById('results');
-                resultsContainer.innerHTML = ''; 
+                resultsContainer.innerHTML = ''; // لمسح أي نتائج سابقة
 
-                var allLinksWorking = true; 
+                var allLinksWorking = true; // متغير للتحقق من أن جميع الروابط شغالة
 
                 links.forEach(function(link) {
                     if (link !== '') {
@@ -129,10 +135,10 @@
                                     resultsContainer.innerHTML += '<p>' + link + ' - شغالة</p>';
                                 } else {
                                     resultsContainer.innerHTML += '<p>' + link + ' - غير شغالة</p>';
-                                    allLinksWorking = false; 
+                                    allLinksWorking = false; // إذا كان أي رابط غير شغال، يتم تعيين القيمة إلى false
                                 }
 
-                                
+                                // إذا وصلنا إلى آخر رابط، نقوم بالتحقق من المتغير
                                 if (resultsContainer.children.length === links.length) {
                                     if (allLinksWorking) {
                                         resultsContainer.innerHTML += '<div class="results">جميع الروابط شغالة</div>';
@@ -163,6 +169,9 @@
         </div>
         <div class="results-container">
             <div id="results"></div>
+        </div>
+        <div class="footer">
+            By: Mahmood ❤️
         </div>
     </div>
 </body>
